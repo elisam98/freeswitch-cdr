@@ -4,6 +4,7 @@
  */
 
 var express = require('express');
+var cors = require('cors');
 var routes = require('./routes');
 var http = require('http');
 var path = require('path');
@@ -36,11 +37,7 @@ app.use(express.urlencoded());
 app.use(express.methodOverride()); 
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(function(req, res, next) {
-	res.header('Access-Control-Allow-Origin', '*');
-	res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-	next();
-});
+app.use(cors());
 
 // development only 
 
