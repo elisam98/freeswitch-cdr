@@ -55,10 +55,18 @@ app.get('/api', function(req, res) {
 });
 app.get('/api/cdr', cors(), function(req, res) {
 	var cdr = cloudant.use('safetelecom_cdr');
-	cdr.list({include_docs: true}, function(err, docs) {
+	cdr.find({
+		"selector":
+			{"variables.start_epoch":
+				{"$gt": 0}
+			},
+		"sort": [{"variables.start_epoch": "asc"}]
+		},
+		function(err, docs) {
 		res.setHeader('Content-Type', 'application/json');
 		res.send(docs);
-	});
+		}
+	);
 });
 
 http.createServer(app).listen(app.get('port'), app.get('domain'), function(){
