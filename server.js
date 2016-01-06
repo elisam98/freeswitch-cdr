@@ -55,12 +55,10 @@ app.get('/api', function(req, res) {
 });
 app.get('/api/cdr', cors(), function(req, res) {
 	var cdr = cloudant.use('safetelecom_cdr');
-	cdr.find({
-		"selector":
-			{"variables.start_epoch":
-				{"$gt": 0}
-			},
-		"sort": [{"variables.start_epoch": "asc"}]
+	cdr.find(
+		{
+		"selector": {"variables.start_epoch":{"$gt": 0}},
+		"sort": [{"variables.start_epoch": "desc"}]
 		},
 		function(err, docs) {
 		res.setHeader('Content-Type', 'application/json');
