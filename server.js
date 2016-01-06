@@ -18,8 +18,8 @@ var cloudant = Cloudant({account:me, password:password});
 var ipaddress = process.env.OPENSHIFT_NODEJS_IP;
 var port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 if (typeof ipaddress === "undefined") {
-  console.warn('No OPENSHIFT_NODEJS_IP var, using 127.0.0.1');
-  ipaddress = "127.0.0.1";
+	console.warn('No OPENSHIFT_NODEJS_IP var, using 127.0.0.1');
+	ipaddress = "127.0.0.1";
 };
 
 var app = express();
@@ -37,34 +37,32 @@ app.use(express.methodOverride());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+	next();
 });
 
 // development only 
 
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+	app.use(express.errorHandler());
 };
 
 app.get('/', routes.index);
 
 app.get('/api', function(req, res) {
-    cloudant.db.list(function(err, allDbs) {
-        res.send('Available databases: ' + allDbs.join(', '));
-    });
+	cloudant.db.list(function(err, allDbs) {
+		res.send('Available databases: ' + allDbs.join(', '));
+	    });
 });
 app.get('/api/cdr', function(req, res) {
-    var cdr = cloudant.use('safetelecom_cdr');
-    cdr.list({include_docs: true, limit: 10}, function(err, docs) {
-        res.setHeader('Content-Type', 'application/json');
-        res.send(docs);
-    });
-    
-    
+	var cdr = cloudant.use('safetelecom_cdr');
+	cdr.list({}, function(err, docs) {
+		res.setHeader('Content-Type', 'application/json');
+		res.send(docs);
+	});
 });
 
 http.createServer(app).listen(app.get('port'), app.get('domain'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+	console.log('Express server listening on port ' + app.get('port'));
 });
