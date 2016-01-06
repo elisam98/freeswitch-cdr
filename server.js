@@ -55,7 +55,7 @@ app.get('/api', function(req, res) {
 });
 app.get('/api/cdr', cors(), function(req, res) {
 	var cdr = cloudant.use('safetelecom_cdr');
-	cdr.list({}, function(err, docs) {
+	cdr.list({include_docs: true}, function(err, docs) {
 		res.setHeader('Content-Type', 'application/json');
 		res.send(docs);
 	});
