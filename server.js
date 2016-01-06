@@ -53,7 +53,7 @@ app.get('/api', function(req, res) {
 		res.send('Available databases: ' + allDbs.join(', '));
 	    });
 });
-app.get('/api/cdr', function(req, res) {
+app.get('/api/cdr', cors(), function(req, res) {
 	var cdr = cloudant.use('safetelecom_cdr');
 	cdr.list({}, function(err, docs) {
 		res.setHeader('Content-Type', 'application/json');
