@@ -61,7 +61,7 @@ app.get('/api/cdrs', cors(), function(req, res) {
 		{
 		"selector": {"variables.start_epoch":{"$gt": 0}},
 		"sort": [{"variables.start_epoch": "desc"}],
-		"limit": limit
+		"limit": 1
 		},
 		function(err, docs) {
 		res.setHeader('Content-Type', 'application/json');
