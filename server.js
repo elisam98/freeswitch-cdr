@@ -54,7 +54,6 @@ app.get('/api', function(req, res) {
 	    });
 });
 app.get('/api/cdrs', cors(), function(req, res) {
-	console.log(limit);
 	var cdr = cloudant.use('safetelecom_cdr');
 	cdr.find(
 		{
