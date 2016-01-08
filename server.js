@@ -54,14 +54,13 @@ app.get('/api', function(req, res) {
 	    });
 });
 app.get('/api/cdrs', cors(), function(req, res) {
-	var limit = req.query.limit;
 	console.log(limit);
 	var cdr = cloudant.use('safetelecom_cdr');
 	cdr.find(
 		{
 		"selector": {"variables.start_epoch":{"$gt": 0}},
 		"sort": [{"variables.start_epoch": "desc"}],
-		"limit": 1
+		"limit": req.query.limit;
 		},
 		function(err, docs) {
 		res.setHeader('Content-Type', 'application/json');
