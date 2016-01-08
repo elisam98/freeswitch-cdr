@@ -1,13 +1,14 @@
 {
-  "name": "application-name",
+  "name": "safetelecom-cdr",
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "cloudant": "^1.4.0",
     "compression": "^1.6.0",
+    "cors": "^2.7.1",
     "express": "3.4.8",
     "jade": "*"
   }
