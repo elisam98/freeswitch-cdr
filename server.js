@@ -53,7 +53,7 @@ app.get('/api', function(req, res) {
 		res.send('Available databases: ' + allDbs.join(', '));
 	    });
 });
-app.get('/api/cdr', cors(), function(req, res) {
+app.get('/api/cdrs', cors(), function(req, res) {
 	var cdr = cloudant.use('safetelecom_cdr');
 	cdr.find(
 		{
@@ -67,6 +67,17 @@ app.get('/api/cdr', cors(), function(req, res) {
 	);
 });
 
+app.get('/api/cdrs/:id', cors(), function(req, res) {
+    var id = req.params.id;
+	var cdr = cloudant.use('safetelecom_cdr');
+	cdr.find(
+		{"selector": {"_id": id}},
+		function(err, docs) {
+		res.setHeader('Content-Type', 'application/json');
+		res.send(docs);
+		}
+	);
+});
 http.createServer(app).listen(app.get('port'), app.get('domain'), function(){
 	console.log('Express server listening on port ' + app.get('port'));
 });
