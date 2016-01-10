@@ -59,16 +59,20 @@ app.get('/api/cdrs', cors(), function(req, res) {
 	var sort = req.query.sort || 'desc';
 	var epochStart = req.query.start || 0;
 	var epochEnd = req.query.end || Date.now().toString();
-	console.log(epochStart);
-	console.log(epochEnd);
+
+
+	var andArray = [];
+	if(typeof req.query.context != 'undefined') {
+		andArray.push({"callflow": { "$elemMatch": { "caller_profile.context": req.query.context}}});
+	}
+	andArray.push({"variables.start_uepoch": {"$gte": epochStart}});
+	andArray.push({"variables.start_uepoch": {"$lte": epochEnd}});
+	console.log(andArray);
 
 	var cdr = cloudant.use('safetelecom_cdr');
 	var query = {
 		"selector": {
-			"$and": [
-				{"variables.start_uepoch": {"$gte": epochStart}},
-				{"variables.start_uepoch": {"$lte": epochEnd}}
-			]
+			"$and": andArray
 		},
 		"sort": [{"variables.start_uepoch": sort}],
 		"limit": limit,
@@ -77,11 +81,24 @@ app.get('/api/cdrs', cors(), function(req, res) {
 	console.log(query);
 	cdr.find(query, function(err, docs) {
 		var billsec = 0;
+/*
+		if (typeof context != 'undefined') {
+			var results = [];
+			
+			docs.docs.forEach(function(value) {
+				if (value.callflow[0].caller_profile.context == context) {
+					results.push(value);
+				};
+			});
+			
+			docs.docs = results;
+		}
+*/
 		docs.docs.forEach(function(value) {
-			console.log(parseInt(value.variables.billsec));
 			billsec += parseInt(value.variables.billsec);
 		});
-        var result = {"meta": {"length":docs.docs.length,"sort":sort,"limit":limit, "skip":skip,"billsec":billsec}, "docs": docs.docs};
+
+        var result = {"meta": {"length":docs.docs.length,"sort":sort,"limit":limit,"skip":skip,"billsec":billsec}, "docs": docs.docs};
 		res.setHeader('Content-Type', 'application/json');
 		res.send(result);
 	});
