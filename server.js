@@ -54,17 +54,40 @@ app.get('/api', function(req, res) {
 	    });
 });
 app.get('/api/cdrs', cors(), function(req, res) {
+	var limit = parseInt(req.query.limit) || 10000;
+	var skip = parseInt(req.query.skip) || 0;
+	var sort = req.query.sort || 'desc';
+	var epochStart = req.query.start || 0;
+	var epochEnd = req.query.end || parseInt(Date.now()/1000).toString();
+	console.log(epochStart);
+	console.log(epochEnd);
+
 	var cdr = cloudant.use('safetelecom_cdr');
 	var query = {
-		"selector": {"variables.start_epoch":{"$gt": 0}},
-		"sort": [{"variables.start_epoch": req.query.sort || "desc"}],
-		"limit": parseInt(req.query.limit) || 10000,
-		"skip": parseInt(req.query.skip) || 0
+		"selector": {
+			"$and": [
+				{"variables.start_epoch": {"$gt": epochStart}},
+				{"variables.start_epoch": {"$lt": epochEnd}}
+			]
+		},
+		"sort": [{"variables.start_epoch": sort}],
+		"limit": limit,
+		"skip": skip
 	};
 	console.log(query);
 	cdr.find(query, function(err, docs) {
+		var result = {
+			"meta": {
+				"length": Object.keys(docs).length,
+				"sort": sort,
+				"limit": limit,
+				"skip": skip
+			},
+			docs
+		};
+				
 		res.setHeader('Content-Type', 'application/json');
-		res.send(docs);
+		res.send(result);
 	});
 });
 
