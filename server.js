@@ -58,7 +58,7 @@ app.get('/api/cdrs', cors(), function(req, res) {
 	var skip = parseInt(req.query.skip) || 0;
 	var sort = req.query.sort || 'desc';
 	var epochStart = req.query.start || 0;
-	var epochEnd = req.query.end || parseInt(Date.now()/1000).toString();
+	var epochEnd = req.query.end || parseInt(Date.now()).toString();
 	console.log(epochStart);
 	console.log(epochEnd);
 
@@ -66,11 +66,11 @@ app.get('/api/cdrs', cors(), function(req, res) {
 	var query = {
 		"selector": {
 			"$and": [
-				{"variables.start_epoch": {"$gt": epochStart}},
-				{"variables.start_epoch": {"$lt": epochEnd}}
+				{"variables.start_uepoch": {"$gt": epochStart}},
+				{"variables.start_uepoch": {"$lt": epochEnd}}
 			]
 		},
-		"sort": [{"variables.start_epoch": sort}],
+		"sort": [{"variables.start_uepoch": sort}],
 		"limit": limit,
 		"skip": skip
 	};
