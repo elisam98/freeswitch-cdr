@@ -78,7 +78,7 @@ app.get('/api/cdrs', cors(), function(req, res) {
 	cdr.find(query, function(err, docs) {
 		var result = {
 			"meta": {
-				"length": Object.keys(docs).length,
+				"length": undefined,
 				"sort": sort,
 				"limit": limit,
 				"skip": skip
