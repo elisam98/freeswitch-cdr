@@ -58,7 +58,7 @@ app.get('/api/cdrs', cors(), function(req, res) {
 	var skip = parseInt(req.query.skip) || 0;
 	var sort = req.query.sort || 'desc';
 	var epochStart = req.query.start || 0;
-	var epochEnd = req.query.end || parseInt(Date.now()).toString();
+	var epochEnd = req.query.end || Date.now().toString();
 	console.log(epochStart);
 	console.log(epochEnd);
 
@@ -76,16 +76,7 @@ app.get('/api/cdrs', cors(), function(req, res) {
 	};
 	console.log(query);
 	cdr.find(query, function(err, docs) {
-		var result = {
-			"meta": {
-				"length": 1,
-				"sort": sort,
-				"limit": limit,
-				"skip": skip
-			},
-			docs
-		};
-				
+        var result = {"meta": {"sort":sort,"limit":limit, "skip":skip}, "docs": docs.docs};
 		res.setHeader('Content-Type', 'application/json');
 		res.send(result);
 	});
