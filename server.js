@@ -76,7 +76,12 @@ app.get('/api/cdrs', cors(), function(req, res) {
 	};
 	console.log(query);
 	cdr.find(query, function(err, docs) {
-        var result = {"meta": {"length":docs.docs.length,"sort":sort,"limit":limit, "skip":skip}, "docs": docs.docs};
+		var billsec = 0;
+		docs.docs.forEach(function(value) {
+			console.log(parseInt(value.variables.billsec));
+			billsec += parseInt(value.variables.billsec);
+		});
+        var result = {"meta": {"length":docs.docs.length,"sort":sort,"limit":limit, "skip":skip,"billsec":billsec}, "docs": docs.docs};
 		res.setHeader('Content-Type', 'application/json');
 		res.send(result);
 	});
