@@ -57,16 +57,19 @@ app.get('/api/cdrs', cors(), function(req, res) {
 	var limit = parseInt(req.query.limit) || undefined;
 	var skip = parseInt(req.query.skip) || 0;
 	var sort = req.query.sort || 'desc';
-	var epochStart = req.query.start || 0;
+	var epochStart = req.query.start ? req.query.start : 0;
 	var epochEnd = req.query.end || Date.now().toString();
 
 
 	var andArray = [];
+	andArray.push({"variables.start_uepoch": {"$gte": epochStart}});
+
 	if(typeof req.query.context != 'undefined') {
 		andArray.push({"callflow": { "$elemMatch": { "caller_profile.context": req.query.context}}});
 	}
-	andArray.push({"variables.start_uepoch": {"$gte": epochStart}});
-	andArray.push({"variables.start_uepoch": {"$lte": epochEnd}});
+	if(typeof req.query.end != 'undefined') {
+		andArray.push({"variables.start_uepoch": {"$lte": req.query.end}});
+	}
 	console.log(andArray);
 
 	var cdr = cloudant.use('safetelecom_cdr');
