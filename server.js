@@ -65,7 +65,9 @@ app.get('/api/cdrs', cors(), function(req, res) {
 	andArray.push({"variables.start_uepoch": {"$gte": epochStart}});
 
 	if(typeof req.query.context != 'undefined') {
-		andArray.push({"callflow": { "$elemMatch": { "caller_profile.context": req.query.context}}});
+		if(req.query.context != 'all') {
+			andArray.push({"callflow": { "$elemMatch": { "caller_profile.context": req.query.context}}});
+		}
 	}
 	if(typeof req.query.end != 'undefined') {
 		andArray.push({"variables.start_uepoch": {"$lte": req.query.end}});
