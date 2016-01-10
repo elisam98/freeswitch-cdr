@@ -54,7 +54,7 @@ app.get('/api', function(req, res) {
 	    });
 });
 app.get('/api/cdrs', cors(), function(req, res) {
-	var limit = parseInt(req.query.limit) || 10000;
+	var limit = parseInt(req.query.limit) || undefined;
 	var skip = parseInt(req.query.skip) || 0;
 	var sort = req.query.sort || 'desc';
 	var epochStart = req.query.start || 0;
@@ -76,7 +76,7 @@ app.get('/api/cdrs', cors(), function(req, res) {
 	};
 	console.log(query);
 	cdr.find(query, function(err, docs) {
-        var result = {"meta": {"sort":sort,"limit":limit, "skip":skip}, "docs": docs.docs};
+        var result = {"meta": {"length":docs.docs.length,"sort":sort,"limit":limit, "skip":skip}, "docs": docs.docs};
 		res.setHeader('Content-Type', 'application/json');
 		res.send(result);
 	});
