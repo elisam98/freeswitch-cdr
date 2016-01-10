@@ -66,8 +66,8 @@ app.get('/api/cdrs', cors(), function(req, res) {
 	var query = {
 		"selector": {
 			"$and": [
-				{"variables.start_uepoch": {"$gt": epochStart}},
-				{"variables.start_uepoch": {"$lt": epochEnd}}
+				{"variables.start_uepoch": {"$gte": epochStart}},
+				{"variables.start_uepoch": {"$lte": epochEnd}}
 			]
 		},
 		"sort": [{"variables.start_uepoch": sort}],
