@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>SafeTelecom CDR Console</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link href="css/materialize.min.css" rel="stylesheet">
+	<link href="css/font-awesome.min.css" rel="stylesheet">
+<!--
+	<link href="css/style.css" rel="stylesheet">
+-->
+	<link rel="shortcut icon" href="img/favicon.png">
+    <style>
+        .nav-wrapper {
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: space-between;
+        }
+        .nav-wrapper a {
+            padding: 0 1rem;
+            font-size: 1.25rem;
+        }
+/*
+		nav i {
+			font-size: inherit!important;
+		}
+*/
+        #loader-modal .modal-content {
+            border-radius: 10px;
+        }
+    </style>  
+</head>
+
+<body>
+<header>
+	<div class="navbar-fixed">
+               <nav>
+			<div class="nav-wrapper">
+				<a href="#"><strong>SafeTelecom CDR</strong></a>
+				<ul class="right">
+					<li><a class="waves-effect" id="refresh-button"><i class="material-icons">refresh</i></a></li>
+					<li><a class="waves-effect modal-trigger" href="#context-modal"><i class="fa fa-filter"></i></a></li>
+					<li><a class="waves-effect" id="sort-button" href="#sort"><i class="fa fa-sort"></i></a></li>
+				</ul>
+			</div>
+		</nav>
+	</div>
+</header>
+<div class="container">
+	<div class="row clearfix">
+	</div>
+	<div class="row clearfix">
+		<div id="main-content">
+		</div>
+	</div>
+</div>
+<footer class="page-footer">
+	<div class="footer-copyright">
+		<div class="container">
+			&copy; 2016 SafeTelecom &bullet; (845) 262-3529
+		</div>
+	</div>
+</footer>
+
+<!-- Added Components -->
+
+<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+	<a class="modal-trigger btn-floating btn-large waves-effect waves-light red" href="#date-modal"><i class="material-icons">date_range</i></a>
+</div>
+
+<div id="date-modal" class="modal modal-footer">
+	<div class="modal-content">
+		<h4>Date Range</h4>
+		<div class="input-field col s12">
+			<input class="dated" type="date" name="from-date" id="from-date">
+		</div>
+		<div class="input-field col s12">
+			<input class="dated" type="date" name="to-date" id="to-date">
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button id="go-date" class="right waves-effect waves-green btn-flat">Set</button>
+		<a href="#!" class="modal-action modal-close right waves-effect waves-green btn-flat">Cancel</a>
+	</div>
+</div>
+
+<div id="context-modal" class="modal modal-footer">
+	<div class="modal-content">
+		<h4>Context</h4>
+		<div class="input-field col s12">
+			<input type="text" name="context" id="context" value="all">
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button id="go-context" class="right waves-effect waves-green btn-flat">Set</button>
+		<a href="#!" class="modal-action modal-close right waves-effect waves-green btn-flat">Cancel</a>
+	</div>
+</div>
+
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="js/materialize.min.js"></script>
+<script src="js/moment.min.js"></script>
+<script>
+	$(function() {
+		$('.modal-trigger').leanModal();
+		$('.button-collapse').sideNav();
+		$('.dropdown-button').dropdown();
+	});
+</script>
+<script src="js/app.js"></script>
+</body>
+</html>
