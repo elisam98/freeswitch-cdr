@@ -122,6 +122,48 @@ app.get('/api/cdrs/:id', cors(), function(req, res) {
 		}
 	);
 });
+
+app.get('/reports', cors(), function(req, res) {
+	var limit = parseInt(req.query.limit) || undefined;
+	var skip = parseInt(req.query.skip) || 0;
+	var sort = req.query.sort ? req.query.sort : 'desc';
+	var epochStart = req.query.start ? req.query.start : 1451943818334542;
+	var epochEnd = req.query.end || Date.now().toString();
+
+
+	var andArray = [];
+	andArray.push({"variables.start_uepoch": {"$gte": epochStart}});
+	if(typeof req.query.context != 'undefined') {
+		if(req.query.context != 'all') {
+			andArray.push({"callflow": { "$elemMatch": { "caller_profile.context": req.query.context}}});
+		}
+	}
+
+	if(typeof req.query.end != 'undefined') {
+		andArray.push({"variables.end_uepoch": {"$lte": req.query.end}});
+	}
+
+	var cdr = cloudant.use('safetelecom_cdr');
+	var query = {
+		"selector": {
+			"$and": andArray
+		},
+		"sort": [{"variables.start_uepoch": sort}],
+		"limit": limit,
+		"fields": ["channel_data.direction", "variables.billsec", "variables.sip_from_user", "variables.sip_to_user", "variables.sip_to_host", "variables.start_stamp", "variables.answer_stamp", "variables.end_stamp", "variables.billsec", "variables.caller_id", "variables.start_uepoch"],
+		"skip": skip
+	};
+	console.log(query);
+	cdr.find(query, function(err, docs) {
+		var billsec = 0;
+		docs.docs.forEach(function(value) {
+			billsec += parseInt(value.variables.billsec);
+		});
+        var result = {"meta": {"length":docs.docs.length,"sort":sort,"limit":limit,"skip":skip,"billsec":billsec}, "docs": docs.docs};
+		res.render('reports', { result: result, title: 'KND Auction Call Records' });
+	});
+});
+
 http.createServer(app).listen(app.get('port'), app.get('domain'), function(){
 	console.log('Express server listening on port ' + app.get('port'));
 });

@@ -1,0 +1,29 @@
+extends layout
+
+block content
+	img(src="http://safetelecom.net/assets/images/SafeTelecom_black.png")
+	div(class="header")
+		h1= title
+		div
+			h4 Total Calls: #{result.meta.length}
+			h4 Total Seconds: #{result.meta.billsec}
+
+	table(class="table")
+		thead
+			tr
+				th Call Time
+				th Duration (Seconds)
+				th Call Direction
+				th From
+				th To
+				th Caller ID
+				th Start Epoch
+		each record in result.docs
+			tr
+				td= record.variables.start_stamp
+				td= record.variables.billsec
+				td= record.channel_data.direction
+				td= record.variables.sip_from_user
+				td= record.variables.sip_to_user
+				td= record.variables.caller_id
+				td= record.variables.start_uepoch
