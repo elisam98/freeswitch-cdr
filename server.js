@@ -129,13 +129,14 @@ app.get('/reports', cors(), function(req, res) {
 	var sort = req.query.sort ? req.query.sort : 'desc';
 	var epochStart = req.query.start ? req.query.start : 1451943818334542;
 	var epochEnd = req.query.end || Date.now().toString();
+	var context = req.query.context ? req.query.context : 'undefined';
 
 
 	var andArray = [];
 	andArray.push({"variables.start_uepoch": {"$gte": epochStart}});
 	if(typeof req.query.context != 'undefined') {
 		if(req.query.context != 'all') {
-			andArray.push({"callflow": { "$elemMatch": { "caller_profile.context": req.query.context}}});
+			andArray.push({"callflow": { "$elemMatch": { "caller_profile.context": context}}});
 		}
 	}
 
@@ -160,7 +161,7 @@ app.get('/reports', cors(), function(req, res) {
 			billsec += parseInt(value.variables.billsec);
 		});
         var result = {"meta": {"length":docs.docs.length,"sort":sort,"limit":limit,"skip":skip,"billsec":billsec}, "docs": docs.docs};
-		res.render('reports', { result: result, title: 'KND Auction Call Records' });
+		res.render('reports', { result: result, title: context + ' Detailed Call Records' });
 	});
 });
 
