@@ -9,6 +9,7 @@
     "cloudant": "^1.4.0",
     "compression": "^1.6.0",
     "cors": "^2.7.1",
+    "dotenv": "^2.0.0",
     "express": "3.4.8",
     "jade": "*"
   }

@@ -9,10 +9,12 @@ var routes = require('./routes');
 var http = require('http');
 var path = require('path');
 
+require('dotenv').config();
+
 // Load the Cloudant library.
 var Cloudant = require('cloudant');
-var me = 'safetelecom';
-var password = 'chilling1102';
+var me = process.env.CLOUDANT_ACCOUNT;
+var password = process.env.CLOUDANT_PASSWORD;
 
 var cloudant = Cloudant({account:me, password:password});
 
