@@ -50,8 +50,6 @@ if ('development' == app.get('env')) {
 
 app.get('/', routes.index);
 
-app.get('/knd', routes.knd);
-
 app.get('/api', function(req, res) {
 	cloudant.db.list(function(err, allDbs) {
 		res.send('Available databases: ' + allDbs.join(', '));
