@@ -161,7 +161,7 @@ app.get('/reports', cors(), function(req, res) {
 			billsec += parseInt(value.variables.billsec);
 		});
         var result = {"meta": {"length":docs.docs.length,"sort":sort,"limit":limit,"skip":skip,"billsec":billsec}, "docs": docs.docs};
-		res.render('reports', { result: result, title: context + ' Detailed Call Records' });
+		res.render('reports', { result: result, title: 'Detailed Call Records (context: ' + context + ')' });
 	});
 });
 
