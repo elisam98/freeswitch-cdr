@@ -17,6 +17,7 @@ block content
 				th From
 				th To
 				th Caller ID
+				th Context
 				th Start Epoch
 		each record in result.docs
 			tr
@@ -26,4 +27,5 @@ block content
 				td= record.variables.sip_from_user
 				td= record.variables.sip_to_user
 				td= record.variables.caller_id_name
+				td= record.callflow[0].caller_profile.context
 				td= record.variables.start_uepoch

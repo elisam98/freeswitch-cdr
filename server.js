@@ -151,7 +151,7 @@ app.get('/reports', cors(), function(req, res) {
 		},
 		"sort": [{"variables.start_uepoch": sort}],
 		"limit": limit,
-		"fields": ["channel_data.direction", "variables.billsec", "variables.sip_from_user", "variables.sip_to_user", "variables.sip_to_host", "variables.start_stamp", "variables.answer_stamp", "variables.end_stamp", "variables.billsec", "variables.caller_id_name", "variables.start_uepoch"],
+		"fields": ["channel_data.direction", "variables.billsec", "variables.sip_from_user", "variables.sip_to_user", "variables.sip_to_host", "variables.start_stamp", "variables.answer_stamp", "variables.end_stamp", "variables.billsec", "variables.caller_id_name", "variables.start_uepoch", "callflow"],
 		"skip": skip
 	};
 	console.log(query);
