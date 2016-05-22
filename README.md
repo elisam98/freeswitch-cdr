@@ -1,4 +1,4 @@
-# fs-cdr
+# freeswitch-cdr
 Freeswitch CDR Console + API
 
 NOTE: You must add a .env file to root to access the cloudant database
