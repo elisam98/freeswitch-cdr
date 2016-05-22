@@ -19,7 +19,7 @@ var password = process.env.CLOUDANT_PASSWORD;
 var cloudant = Cloudant({account:me, password:password});
 
 var ipaddress = process.env.OPENSHIFT_NODEJS_IP;
-var port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+var port = process.env.OPENSHIFT_NODEJS_PORT || 8000;
 if (typeof ipaddress === "undefined") {
 	console.warn('No OPENSHIFT_NODEJS_IP var, using 127.0.0.1');
 	ipaddress = "127.0.0.1";
@@ -30,19 +30,19 @@ var app = express();
 // all environments
 app.set('port', port);
 app.set('domain', ipaddress);
-app.set('views', path.join(__dirname, 'views')); 
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-app.use(express.favicon()); 
+app.use(express.favicon());
 app.use(express.logger('dev'));
-app.use(express.json()); 
+app.use(express.json());
 app.use(express.urlencoded());
-app.use(express.methodOverride()); 
+app.use(express.methodOverride());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.options('*', cors());
 
-// development only 
+// development only
 
 if ('development' == app.get('env')) {
 	app.use(express.errorHandler());
@@ -91,13 +91,13 @@ app.get('/api/cdrs', cors(), function(req, res) {
 /*
 		if (typeof context != 'undefined') {
 			var results = [];
-			
+
 			docs.docs.forEach(function(value) {
 				if (value.callflow[0].caller_profile.context == context) {
 					results.push(value);
 				};
 			});
-			
+
 			docs.docs = results;
 		}
 */
@@ -151,7 +151,7 @@ app.get('/reports', cors(), function(req, res) {
 		},
 		"sort": [{"variables.start_uepoch": sort}],
 		"limit": limit,
-		"fields": ["channel_data.direction", "variables.billsec", "variables.sip_from_user", "variables.sip_to_user", "variables.sip_to_host", "variables.start_stamp", "variables.answer_stamp", "variables.end_stamp", "variables.billsec", "variables.caller_id", "variables.start_uepoch"],
+		"fields": ["channel_data.direction", "variables.billsec", "variables.sip_from_user", "variables.sip_to_user", "variables.sip_to_host", "variables.start_stamp", "variables.answer_stamp", "variables.end_stamp", "variables.billsec", "variables.caller_id_name", "variables.start_uepoch"],
 		"skip": skip
 	};
 	console.log(query);
