@@ -26,6 +26,8 @@ if (typeof ipaddress === "undefined") {
 };
 
 var app = express();
+// include moment js library
+app.locals.moment = require('moment');
 
 // all environments
 app.set('port', port);
@@ -162,6 +164,43 @@ app.get('/reports', cors(), function(req, res) {
 		});
         var result = {"meta": {"length":docs.docs.length,"sort":sort,"limit":limit,"skip":skip,"billsec":billsec}, "docs": docs.docs};
 		res.render('reports', { result: result, title: 'Detailed Call Records (context: ' + context + ')' });
+	});
+});
+app.get('/reports/mytickets', cors(), function(req, res) {
+	var limit = parseInt(req.query.limit) || 100;
+	var skip = parseInt(req.query.skip) || 0;
+	var sort = req.query.sort ? req.query.sort : 'desc';
+	var epochStart = req.query.start ? req.query.start : 1451943818334542;
+	var epochEnd = req.query.end || Date.now().toString();
+	var context = 'mytickets';
+
+
+	var andArray = [];
+	andArray.push({"variables.start_uepoch": {"$gte": epochStart}});
+	andArray.push({"callflow": { "$elemMatch": { "caller_profile.context": context}}});
+
+	if(typeof req.query.end != 'undefined') {
+		andArray.push({"variables.end_uepoch": {"$lte": req.query.end}});
+	}
+
+	var cdr = cloudant.use('safetelecom_cdr');
+	var query = {
+		"selector": {
+			"$and": andArray
+		},
+		"sort": [{"variables.start_uepoch": sort}],
+		"limit": limit,
+		"fields": ["variables.direction", "variables.billsec", "variables.sip_from_user", "variables.sip_to_user", "variables.sip_to_host", "variables.start_stamp", "variables.answer_stamp", "variables.end_stamp", "variables.billsec", "variables.caller_id_name", "variables.uuid", "callflow"],
+		"skip": skip
+	};
+	console.log(query);
+	cdr.find(query, function(err, docs) {
+		var billsec = 0;
+		docs.docs.forEach(function(value) {
+			billsec += parseInt(value.variables.billsec);
+		});
+        var result = {"meta": {"length":docs.docs.length,"sort":sort,"limit":limit,"skip":skip,"billsec":billsec}, "docs": docs.docs};
+		res.render('mytickets', { result: result, title: 'MyTickets NYC Call Records' });
 	});
 });
 
