@@ -166,7 +166,7 @@ app.get('/reports', cors(), function(req, res) {
 		res.render('reports', { result: result, title: 'Detailed Call Records (context: ' + context + ')' });
 	});
 });
-app.get('/reports/mytickets', cors(), function(req, res) {
+app.get('/mytickets', cors(), function(req, res) {
 	var limit = parseInt(req.query.limit) || 100;
 	var skip = parseInt(req.query.skip) || 0;
 	var sort = req.query.sort ? req.query.sort : 'desc';
