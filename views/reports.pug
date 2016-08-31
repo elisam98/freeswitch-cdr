@@ -1,31 +1,34 @@
 extends layout
 
 block content
-	img(src="http://safetelecom.net/assets/images/SafeTelecom_black.png")
-	div(class="header")
-		h1= title
-		div
-			h4 Total Calls: #{result.meta.length}
-			h4 Total Seconds: #{result.meta.billsec}
+	.container
+		img(src="http://safetelecom.net/assets/images/SafeTelecom_black.png")
+		div(class="header")
+			h1= title
+			div
+				h4 Total Calls: #{result.meta.length}
+				h4 Total Seconds: #{result.meta.billsec}
 
-	table(class="table")
-		thead
-			tr
-				th Call Time
-				th Duration (Seconds)
-				th Call Direction
-				th From
-				th To
-				th Caller ID
-				th Context
-				th Start Epoch
-		each record in result.docs
-			tr
-				td= record.variables.start_stamp
-				td= record.variables.billsec
-				td= record.channel_data.direction
-				td= record.variables.sip_from_user
-				td= record.variables.sip_to_user
-				td= record.variables.caller_id_name
-				td= record.callflow[0].caller_profile.context
-				td= record.variables.start_uepoch
+		table(class="table")
+			thead
+				tr
+					th Call Time
+					th Duration (Seconds)
+					th Call Direction
+					th From
+					th To
+					th Caller ID
+					th Context
+					th Recording
+			each record in result.docs
+				tr
+					td= record.variables.start_stamp
+					td= record.variables.billsec
+					td= record.variables.direction
+					td= record.variables.sip_from_user
+					td= record.variables.sip_to_user
+					td= record.variables.caller_id_name
+					td= record.callflow[0].caller_profile.context
+					td
+						audio(controls="controls" preload="metadata")
+							source(src="//s3.amazonaws.com/mytickets-recordings/recordings/" + record.variables.uuid + ".wav")
