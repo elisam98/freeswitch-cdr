@@ -26,7 +26,6 @@ block content
 					td= record.variables.direction
 					td= moment().startOf('day').seconds(record.variables.billsec).format('H:mm:ss')
 					td= record.variables.sip_from_user ? record.variables.sip_from_user.slice(-10) : undefined
-					td= record.variables.sip_to_user ? record.variables.sip_to_user.slice(-10) : undefined
+					td= record.variables.last_sent_callee_id_number ? record.variables.last_sent_callee_id_number.slice(-10) : undefined
 					td
-						audio(controls="controls" preload="metadata")
-							source(src="//s3.amazonaws.com/mytickets-recordings/recordings/" + record.variables.uuid + ".wav")
+						a(href="//s3.amazonaws.com/mytickets-recordings/recordings/" + record.variables.uuid + ".wav") Download

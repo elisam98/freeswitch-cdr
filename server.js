@@ -190,7 +190,7 @@ app.get('/mytickets', cors(), function(req, res) {
 		},
 		"sort": [{"variables.start_uepoch": sort}],
 		"limit": limit,
-		"fields": ["variables.direction", "variables.billsec", "variables.sip_from_user", "variables.sip_to_user", "variables.sip_to_host", "variables.start_stamp", "variables.answer_stamp", "variables.end_stamp", "variables.billsec", "variables.caller_id_name", "variables.uuid", "callflow"],
+		"fields": ["variables.direction", "variables.billsec", "variables.sip_from_user", "variables.last_sent_callee_id_number", "variables.sip_to_host", "variables.start_stamp", "variables.answer_stamp", "variables.end_stamp", "variables.billsec", "variables.caller_id_name", "variables.uuid", "callflow"],
 		"skip": skip
 	};
 	console.log(query);
