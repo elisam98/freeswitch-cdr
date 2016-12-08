@@ -28,6 +28,6 @@ block content
 					td= record.variables.sip_from_user ? record.variables.sip_from_user.slice(-10) : undefined
 					td= record.variables.last_sent_callee_id_number ? record.variables.last_sent_callee_id_number.slice(-10) : undefined
 					td
-						a(href="//s3.amazonaws.com/mytickets-recordings/recordings/" + record.variables.uuid + ".mp3") MP3
+						a(href="https://storage.googleapis.com/mytickets-records/" + record.variables.uuid + ".mp3") Google Cloud MP3
 					td
-						a(href="//s3.amazonaws.com/mytickets-recordings/recordings/" + record.variables.uuid + ".wav") WAV
+						a(href="//s3.amazonaws.com/mytickets-recordings/recordings/" + record.variables.uuid + ".mp3") Amazon MP3
