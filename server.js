@@ -156,13 +156,16 @@ app.get('/reports', cors(), function(req, res) {
 		"fields": ["variables.direction", "variables.billsec", "variables.sip_from_user", "variables.sip_to_user", "variables.sip_to_host", "variables.start_stamp", "variables.answer_stamp", "variables.end_stamp", "variables.billsec", "variables.caller_id_name", "variables.uuid", "callflow"],
 		"skip": skip
 	};
-	console.log(query);
+//	console.log(query);
 	cdr.find(query, function(err, docs) {
 		var billsec = 0;
+		var billmin = 0;
 		docs.docs.forEach(function(value) {
 			billsec += parseInt(value.variables.billsec);
+			billmin += Math.ceil(parseInt(value.variables.billsec)/60);
+			console.log(Math.ceil(parseInt(value.variables.billsec)/60));
 		});
-        var result = {"meta": {"length":docs.docs.length,"sort":sort,"limit":limit,"skip":skip,"billsec":billsec}, "docs": docs.docs};
+        var result = {"meta": {"length":docs.docs.length,"sort":sort,"limit":limit,"skip":skip,"billsec":billsec,"billmin":billmin}, "docs": docs.docs};
 		res.render('reports', { result: result, title: 'Detailed Call Records (context: ' + context + ')' });
 	});
 });
